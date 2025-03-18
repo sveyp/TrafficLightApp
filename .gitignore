@@ -1,0 +1,32 @@
+# Xcode
+# --------
+# Build generated
+build/
+DerivedData/
+*.xcworkspace
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Xcode scheme files and shared data
+*.xcscheme
+xcshareddata/
+
+# Swift Package Manager
+.build/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Miscellaneous
+.DS_Store
