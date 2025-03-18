@@ -55,6 +55,9 @@ struct CarModelView: View {
                 .disabled(viewModel.carModel.count < 3)
                 .padding()
             }
+            .navigationDestination(isPresented: $viewModel.isNavigating) {
+                TrafficLightView(carModel: viewModel.carModel)
+            }
         }
     }
 }
