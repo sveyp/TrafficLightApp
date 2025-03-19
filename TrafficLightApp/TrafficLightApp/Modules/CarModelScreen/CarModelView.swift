@@ -16,6 +16,7 @@ struct CarModelView: View {
                 VStack(spacing: 20) {
                     Text("Enter your car model:")
                         .font(.headline)
+                        .accessibilityLabel("Car Model Input Field")
 
                     TextField("Car Model (Min. 3 characters)", text: $viewModel.carModel)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -24,6 +25,7 @@ struct CarModelView: View {
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke(viewModel.showError ? Color.red : Color.gray, lineWidth: 1)
                         )
+                        .accessibilityLabel("Car Model Input")
                         .onChange(of: viewModel.carModel) {
                             viewModel.validateInput()
                         }
@@ -36,6 +38,7 @@ struct CarModelView: View {
                             .foregroundColor(.red)
                             .font(.caption)
                             .padding(.top, -10)
+                            .accessibilityLabel("Error: Car model must be at least 3 characters long.")
                     }
                 }
                 .padding()
@@ -54,6 +57,7 @@ struct CarModelView: View {
                 }
                 .disabled(viewModel.carModel.count < 3)
                 .padding()
+                .accessibilityLabel("Start Driving Button")
             }
             .navigationDestination(isPresented: $viewModel.isNavigating) {
                 TrafficLightView(carModel: viewModel.carModel)

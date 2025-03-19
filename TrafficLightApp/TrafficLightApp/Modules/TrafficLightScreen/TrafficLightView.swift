@@ -17,13 +17,17 @@ struct TrafficLightView: View {
                 Text("Car: \(carModel)")
                     .font(.title)
                     .padding()
+                    .accessibilityLabel("Car Model: \(carModel)")
                 
                 VStack(spacing: 10) {
                     TrafficLightCircle(color: .red, isActive: viewModel.activeLight == .red)
+                        .accessibilityLabel("Red Light")
                     
                     TrafficLightCircle(color: .orange, isActive: viewModel.activeLight == .orange)
+                        .accessibilityLabel("Orange Light")
                     
                     TrafficLightCircle(color: .green, isActive: viewModel.activeLight == .green)
+                        .accessibilityLabel("Green Light")
                 }
                 .frame(height: 350)
                 .padding(.top, 20)
@@ -46,6 +50,7 @@ struct TrafficLightView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                .accessibilityLabel(viewModel.isPaused ? "Resume Traffic Light" : "Pause Traffic Light")
             }
             .padding()
         }
