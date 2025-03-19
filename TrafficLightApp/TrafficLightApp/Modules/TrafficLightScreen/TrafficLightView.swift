@@ -13,29 +13,32 @@ struct TrafficLightView: View {
     
     var body: some View {
         VStack {
-            VStack(spacing: 30) {
-                Text("Car: \(carModel)")
+            VStack(spacing: TrafficLightStyles.Spacing.spacing20) {
+                Text("\(Constants.Titles.carTitlePrefix) \(carModel)")
                     .font(.title)
                     .padding()
-                    .accessibilityLabel("Car Model: \(carModel)")
+                    .accessibilityLabel(Constants.AccessibilityLabels.carModel(carModel))
                 
-                VStack(spacing: 10) {
-                    TrafficLightCircle(color: .red, isActive: viewModel.activeLight == .red)
-                        .accessibilityLabel("Red Light")
+                VStack(spacing: TrafficLightStyles.Spacing.spacing10) {
+                    TrafficLightCircle(color: TrafficLightStyles.Colors.activeRed,
+                                       isActive: viewModel.activeLight == .red)
+                    .accessibilityLabel(Constants.AccessibilityLabels.redLight)
                     
-                    TrafficLightCircle(color: .orange, isActive: viewModel.activeLight == .orange)
-                        .accessibilityLabel("Orange Light")
+                    TrafficLightCircle(color: TrafficLightStyles.Colors.activeOrange,
+                                       isActive: viewModel.activeLight == .orange)
+                    .accessibilityLabel(Constants.AccessibilityLabels.orangeLight)
                     
-                    TrafficLightCircle(color: .green, isActive: viewModel.activeLight == .green)
-                        .accessibilityLabel("Green Light")
+                    TrafficLightCircle(color: TrafficLightStyles.Colors.activeGreen,
+                                       isActive: viewModel.activeLight == .green)
+                    .accessibilityLabel(Constants.AccessibilityLabels.greenLight)
                 }
-                .frame(height: 350)
-                .padding(.top, 20)
+                .frame(height: TrafficLightStyles.Frame.trafficLightStackHeight)
+                .padding(.top, TrafficLightStyles.Padding.padding20)
                 
                 Spacer()
             }
             
-            VStack(spacing: 15) {
+            VStack(spacing: TrafficLightStyles.Spacing.spacing15) {
                 Button(action: {
                     if viewModel.isPaused {
                         viewModel.resumeCycle()
@@ -43,14 +46,18 @@ struct TrafficLightView: View {
                         viewModel.pauseCycle()
                     }
                 }) {
-                    Text(viewModel.isPaused ? "Resume" : "Pause")
+                    Text(viewModel.isPaused
+                         ? Constants.ButtonTitles.resume
+                         : Constants.ButtonTitles.pause)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(viewModel.isPaused ? Color.green.opacity(0.7) : Color.red.opacity(0.7))
+                        .background(viewModel.isPaused
+                                    ? TrafficLightStyles.Colors.greenButtonWithOpacity
+                                    : TrafficLightStyles.Colors.redButtonWithOpacity)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(TrafficLightStyles.CornerRadius.radius10)
                 }
-                .accessibilityLabel(viewModel.isPaused ? "Resume Traffic Light" : "Pause Traffic Light")
+                .accessibilityLabel(Constants.AccessibilityLabels.trafficLightButton(isPaused: viewModel.isPaused))
             }
             .padding()
         }
@@ -67,8 +74,10 @@ struct TrafficLightCircle: View {
     var body: some View {
         Circle()
             .fill(color.opacity(isActive ? 1.0 : 0.2))
-            .frame(width: 100, height: 100)
-            .animation(.easeInOut(duration: 0.5), value: isActive)
+            .frame(width: TrafficLightStyles.Frame.circleSize,
+                   height: TrafficLightStyles.Frame.circleSize)
+            .animation(.easeInOut(duration: TrafficLightStyles.Animation.easeInOutDuration),
+                       value: isActive)
     }
 }
 

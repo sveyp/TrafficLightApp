@@ -13,19 +13,22 @@ struct CarModelView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                VStack(spacing: 20) {
-                    Text("Enter your car model:")
+                VStack(spacing: TrafficLightStyles.Spacing.spacing20) {
+                    Text(Constants.Titles.enterCarModel)
                         .font(.headline)
-                        .accessibilityLabel("Car Model Input Field")
+                        .accessibilityLabel(Constants.AccessibilityLabels.carModelInputField)
 
-                    TextField("Car Model (Min. 3 characters)", text: $viewModel.carModel)
+                    TextField(Constants.TextFieldPlaceholders.carModelPlaceholder, text: $viewModel.carModel)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(viewModel.showError ? Color.red : Color.gray, lineWidth: 1)
+                            RoundedRectangle(cornerRadius: TrafficLightStyles.CornerRadius.radius5)
+                                .stroke(viewModel.showError
+                                        ? TrafficLightStyles.Colors.activeRed
+                                        : TrafficLightStyles.Colors.inactive,
+                                        lineWidth: 1)
                         )
-                        .accessibilityLabel("Car Model Input")
+                        .accessibilityLabel(Constants.AccessibilityLabels.carModelInput)
                         .onChange(of: viewModel.carModel) {
                             viewModel.validateInput()
                         }
@@ -34,11 +37,11 @@ struct CarModelView: View {
                         }
                     
                     if viewModel.showError {
-                        Text("Car model must be at least 3 characters long")
-                            .foregroundColor(.red)
+                        Text(Constants.ErrorMessages.invalidCarModel)
+                            .foregroundColor(TrafficLightStyles.Colors.activeRed)
                             .font(.caption)
-                            .padding(.top, -10)
-                            .accessibilityLabel("Error: Car model must be at least 3 characters long.")
+                            .padding(.top, TrafficLightStyles.Padding.negativePadding)
+                            .accessibilityLabel("Error: \(Constants.ErrorMessages.invalidCarModel)")
                     }
                 }
                 .padding()
@@ -48,16 +51,18 @@ struct CarModelView: View {
                 Button(action: {
                     viewModel.validateAndNavigate()
                 }) {
-                    Text("Start Driving")
+                    Text(Constants.ButtonTitles.startDriving)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(viewModel.carModel.count >= 3 ? Color.blue : Color.gray)
+                        .background(viewModel.carModel.count >= 3
+                                    ? TrafficLightStyles.Colors.defaultButton
+                                    : TrafficLightStyles.Colors.inactive)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(TrafficLightStyles.CornerRadius.radius10)
                 }
                 .disabled(viewModel.carModel.count < 3)
                 .padding()
-                .accessibilityLabel("Start Driving Button")
+                .accessibilityLabel(Constants.AccessibilityLabels.startDrivingButton)
             }
             .navigationDestination(isPresented: $viewModel.isNavigating) {
                 TrafficLightView(carModel: viewModel.carModel)
