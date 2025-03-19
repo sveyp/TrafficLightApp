@@ -13,18 +13,27 @@ class TrafficLightViewModel: TrafficLightViewModelProtocol {
     @Published var activeLight: TrafficLight = .red
     @Published var isPaused: Bool = false
 
-    private var timer: Timer?
+    private var timerService: TimerServiceProtocol
     private var goingUp: Bool = false
+    
+    // MARK: - Intializer
+    init(timerService: TimerServiceProtocol = DefaultTimerService()) {
+        self.timerService = timerService
+    }
+    
+    deinit {
+        timerService.invalidateTimer()
+    }
     
     // MARK: - TrafficLightViewModelProtocol
     func startTrafficLightCycle() {
-        timer?.invalidate()
+        timerService.invalidateTimer()
         holdCurrentLight()
     }
     
     func pauseCycle() {
         isPaused = true
-        timer?.invalidate()
+        timerService.invalidateTimer()
     }
     
     func resumeCycle() {
@@ -32,7 +41,7 @@ class TrafficLightViewModel: TrafficLightViewModelProtocol {
         holdCurrentLight()
     }
     
-    // MARK: - Private
+    // MARK: - Private Methods
     private func holdCurrentLight() {
         guard !isPaused else { return }
         
@@ -68,15 +77,9 @@ class TrafficLightViewModel: TrafficLightViewModelProtocol {
     }
     
     private func restartTimer(after interval: TimeInterval) {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { _ in
-            DispatchQueue.main.async {
-                self.switchLight()
-            }
+        timerService.invalidateTimer()
+        timerService.scheduleTimer(withTimeInterval: interval) { [weak self] in
+            self?.switchLight()
         }
-    }
-    
-    deinit {
-        timer?.invalidate()
     }
 }
